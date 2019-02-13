@@ -1,99 +1,46 @@
-Doctrine Float enum
-=====================
+# Enumeration with float values
 
-[![Build Status](https://travis-ci.org/jaroslavtyc/doctrineum-float.svg?branch=master)](https://travis-ci.org/jaroslavtyc/doctrineum-float)
-[![Test Coverage](https://codeclimate.com/github/jaroslavtyc/doctrineum-float/badges/coverage.svg)](https://codeclimate.com/github/jaroslavtyc/doctrineum-float/coverage)
-[![License](https://poser.pugx.org/doctrineum/float/license)](https://packagist.org/packages/doctrineum/float)
+## <span id="usage">Usage</span>
+1. [Use enum](#use-enum)
+2. [NULL is NULL, not Enum](#null-is-null-enum-can-not-hold-it)
+3. [Installation](#installation)
 
-## About
-Adds [Enum](http://en.wikipedia.org/wiki/Enumerated_type) to [Doctrine ORM](http://www.doctrine-project.org/)
-(can be used as a `@Column(type="float_enum")`).
+## Use enum
+```php
+<?php
+use \Granam\FloatEnum\FloatEnum;
 
-##Usage
+$enum = FloatEnum::getEnum(123);
+echo $enum->getValue(); // 123
+var_dump($enum->getValue()); // (float) 123.0
+var_dump($enum->is(123.0)); // true
+var_dump($enum->is(123)); // false
+var_dump($enum->is('123.0')); // false
+var_dump($enum->is($enum)); // true
+```
+
+## NULL is NULL, enum can not hold it
+You **can not** create FloatEnum with NULL value. Just use NULL directly for such value.
 
 ```php
 <?php
-
-use Doctrine\ORM\Mapping as ORM;
-use Doctrineum\Float\FloatEnum;
-
-/**
- * @ORM\Entity()
- */
-class Person
-{
-    /**
-     * @var int
-     * @ORM\Id() @ORM\GeneratedValue(strategy="AUTO") @ORM\Column(type="integer")
-     */
-    private $id;
-
-    /**
-     * @var FloatEnum
-     * @ORM\Column(type="float_enum")
-     */
-    private $height;
-    
-    public function __construct(FloatEnum $height)
-    {
-        $this->height = $height;
-    }
-
-    /**
-     * @return FloatEnum
-     */
-    public function getHeight()
-    {
-        return $this->height;
-    }
+try {
+    \Granam\FloatEnum\FloatEnum::getEnum(null);
+} catch(\Granam\FloatEnum\Exceptions\WrongValueForFloatEnum $wrongValueForFloatEnum) {
+    echo $wrongValueForFloatEnum->getMessage(); // Expected float or object with __toString method on strict mode, got NULL
 }
-
-$tallMan = new Person(FloatEnum::getEnum(197.45));
-
-/** @var \Doctrine\ORM\EntityManager $entityManager */
-$entityManager->persist($tallMan);
-$entityManager->flush();
-$entityManager->clear();
-
-/** @var Person[] $persons */
-$canSitOnFrontSeat = $entityManager->createQuery(
-    "SELECT p FROM Person p WHERE p.height >= 140"
-)->getResult();
-
-var_dump($canSitOnFrontSeat[0]->getHeight()->getValue()); // 197.45;
 ```
 
-##Installation
+## Installation
 
-Add it to your list of Composer dependencies (or by manual edit your composer.json, the `require` section)
-
-```sh
-composer require jaroslavtyc/doctrineum-float
+```bash
+composer.phar require granam/float-enum
 ```
 
-## Doctrine integration
+or manually edit composer.json at your project and `"require":` block (extend existing)
 
-Register new DBAL type:
-
-```php
-<?php
-
-use Doctrineum\Float\FloatEnumType;
-
-FloatEnumType::registerSelf();
-```
-
-When using Symfony with Doctrine you can do the same as above by configuration:
-
-```yaml
-# app/config/config.yml
-
-# Doctrine Configuration
-doctrine:
-    dbal:
-        # ...
-        mapping_types:
-            float_enum: float_enum
-        types:
-            float_enum: Doctrineum\Float\FloatEnumType
+```json
+"require": {
+    "granam/float-enum": "dev-master"
+}
 ```
