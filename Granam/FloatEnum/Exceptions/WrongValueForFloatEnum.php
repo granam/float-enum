@@ -1,7 +1,9 @@
 <?php
 namespace Granam\FloatEnum\Exceptions;
 
-class WrongValueForFloatEnum extends \RuntimeException implements Runtime
+use Granam\ScalarEnum\Exceptions\WrongValueForScalarEnum;
+
+class WrongValueForFloatEnum extends WrongValueForScalarEnum implements Logic
 {
 
 }

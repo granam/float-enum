@@ -41,7 +41,7 @@ class FloatEnumTest extends TestCase
         $floatEnum = $enumClass::getEnum($value = 12345.6789);
 
         self::assertSame($value, $floatEnum->getValue());
-        self::assertSame("$value", (string)$floatEnum);
+        self::assertSame((string)$value, (string)$floatEnum);
     }
 
     /**
@@ -110,12 +110,12 @@ class FloatEnumTest extends TestCase
         $floatEnum = $enumClass::getEnum(new WithToStringTestObject($floatValue = 12345.6789));
         self::assertInstanceOf(ScalarEnumInterface::class, $floatEnum);
         self::assertSame($floatValue, $floatEnum->getValue());
-        self::assertSame("$floatValue", (string)$floatEnum);
+        self::assertSame((string)$floatValue, (string)$floatEnum);
 
         $floatEnum = $enumClass::getEnum(new WithToStringTestObject($integerValue = 12345));
         self::assertInstanceOf(ScalarEnumInterface::class, $floatEnum);
         self::assertSame((float)$integerValue, $floatEnum->getValue());
-        self::assertSame("$integerValue", (string)$floatEnum);
+        self::assertSame((string)$integerValue, (string)$floatEnum);
     }
 
     /**
@@ -150,7 +150,7 @@ class FloatEnumTest extends TestCase
         $floatEnum = $enumClass::getEnum($value = 12345.6789);
         self::assertInstanceOf($enumClass, $floatEnum);
         self::assertSame($value, $floatEnum->getValue());
-        self::assertSame("$value", (string)$floatEnum);
+        self::assertSame((string)$value, (string)$floatEnum);
 
         $inDifferentNamespace = $this->getInheritedEnum($value);
         self::assertInstanceOf($enumClass, $inDifferentNamespace);
