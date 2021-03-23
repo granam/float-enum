@@ -26,7 +26,7 @@ class FloatEnumTest extends TestCase
     /**
      * @return \Granam\FloatEnum\FloatEnum|string
      */
-    protected function getEnumClass()
+    protected function getEnumClass(): string
     {
         return FloatEnum::class;
     }
